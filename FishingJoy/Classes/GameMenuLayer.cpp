@@ -1,100 +1,70 @@
 #include "GameMenuLayer.h"
 
-GameMenuLayer::GameMenuLayer(void)
+
+GameMenuLayer::GameMenuLayer()
 {
 }
 
-CCScene* GameMenuLayer::scene(void)
+
+GameMenuLayer::~GameMenuLayer()
 {
-	CCScene* scene = CCScene::create();
-	GameMenuLayer* gameMenuLayer = GameMenuLayer::create();
-	scene->addChild(gameMenuLayer);
-	return scene;
 }
 
 bool GameMenuLayer::init()
 {
-	do 
+	if (CCLayer::init())
 	{
-		if(!CCLayer::init())
-		{
-			return false;
-		}
-		CCSprite* bgSprite = CCSprite::create("ui_background_normal-ipadhd.png");
-		CC_BREAK_IF(!bgSprite);
-		this->addChild(bgSprite);
-		CCSize winSize = CCDirector::sharedDirector()->getWinSize();
-		bgSprite->setPosition(ccp(winSize.width / 2, winSize.height / 2));
-		CCSprite* titleSprite = CCSprite::create("main_ui_title_cn-ipadhd.png");
-		CC_BREAK_IF(!titleSprite);
-		this->addChild(titleSprite);
-		titleSprite->setPosition(ccp(winSize.width/2, winSize.height * 0.75));
-		this->createMenu();
-		return true;
-	} while (0);
-	return false;
-}
+		return false;
+	}
+	CCSprite *bgSprite = CCSprite::create("ui_background_normal-ipadhd.png");
 
-void GameMenuLayer::createMenu(void)
-{
-	CCSpriteFrameCache::sharedSpriteFrameCache()->addSpriteFramesWithFile("UI_GameStartMenuLayer-ipadhd.plist");
-	CCSpriteFrameCache::sharedSpriteFrameCache()->addSpriteFramesWithFile("UI_GameMenuText_cn-ipadhd.plist");
+	this->addChild(bgSprite);
 	
-	//"开始游戏"按钮正常
-	CCSprite* startNormalBgSprite = CCSprite::createWithSpriteFrameName("ui_button_box02_02.png");
-	CCSprite* startNormalTextSprite = CCSprite::createWithSpriteFrameName("ui_2p_010.png");
-
-	CCSize startNormalBgSize = startNormalBgSprite->getContentSize();
-
-	startNormalBgSprite->addChild(startNormalTextSprite);
-	startNormalTextSprite->setPosition(ccp(startNormalBgSize.width / 2, startNormalBgSize.height / 2 + 20));
-	
-	//"开始游戏"按钮选中
-	CCSprite* startSelectedBgSprite = CCSprite::createWithSpriteFrameName("ui_button_box02_01.png");
-	CCSprite* startSelectedTextSprite = CCSprite::createWithSpriteFrameName("ui_2p_010.png");
-
-	startSelectedBgSprite->addChild(startSelectedTextSprite);
-	startSelectedTextSprite->setPosition(ccp(startNormalBgSize.width / 2, startNormalBgSize.height / 2 + 20));
-
-	CCMenuItemSprite* startMenuItem = CCMenuItemSprite::create(startNormalBgSprite, 
-		startSelectedBgSprite, this, menu_selector(GameMenuLayer::menuCallbackStartGame));
-
-	//"选择场景"按钮正常
-	CCSprite* sceneNormalBgSprite = CCSprite::createWithSpriteFrameName("ui_button_box01_02.png");
-	CCSprite* sceneNormalTextSprite = CCSprite::createWithSpriteFrameName("button_other_014.png");
-
-	CCSize sceneNormalBgSize = sceneNormalBgSprite->getContentSize();
-
-	sceneNormalBgSprite->addChild(sceneNormalTextSprite);
-	sceneNormalTextSprite->setPosition(ccp(sceneNormalBgSize.width / 2, sceneNormalBgSize.height / 2 + 3));
-
-	//"选择场景"按钮选中
-	CCSprite* sceneSelectedBgSprite = CCSprite::createWithSpriteFrameName("ui_button_box01_01.png");
-	CCSprite* sceneSelectedTextSprite = CCSprite::createWithSpriteFrameName("button_other_014.png");
-
-	sceneSelectedBgSprite->addChild(sceneSelectedTextSprite);
-	sceneSelectedTextSprite->setPosition(ccp(sceneNormalBgSize.width / 2, sceneNormalBgSize.height / 2 + 3));
-
-	CCMenuItemSprite* sceneMenuItem = CCMenuItemSprite::create(sceneNormalBgSprite, 
-		sceneSelectedBgSprite, this, menu_selector(GameMenuLayer::menuCallbackStartGame));
-
-	CCMenu* menu = CCMenu::create(startMenuItem, sceneMenuItem, NULL);
-	this->addChild(menu);
 	CCSize winSize = CCDirector::sharedDirector()->getWinSize();
-	menu->setPosition(ccp(winSize.width / 2, winSize.height * 0.4));
-	menu->alignItemsVerticallyWithPadding(50);
-}
 
-void GameMenuLayer::menuCallbackSelectScene(CCObject* sender)
+	bgSprite->setPosition(CCPoint(winSize.width / 2, winSize.height / 2));
+
+
+	//this->createMenu();
+
+
+	return true;
+}
+void GameMenuLayer::createMenu()
+{
+	CCSpriteFrameCache *spriteFrameCache = CCSpriteFrameCache::sharedSpriteFrameCache();
+	spriteFrameCache->addSpriteFramesWithFile("UI_GameMenuText_cn-ipadhd.plist");
+	spriteFrameCache->addSpriteFramesWithFile("UI_GameStartMenuLayer-ipadhd.plist");
+
+	CCSprite *startNormalBackgroundSprite = CCSprite::createWithSpriteFrameName("ui_button_box02_02.png");
+	CCSprite *startNormalTextSprite = CCSprite::createWithSpriteFrameName("ui_2p_010.png");
+	startNormalBackgroundSprite->addChild(startNormalTextSprite);
+
+	CCSize startSpriteSize = startNormalBackgroundSprite->getContentSize();
+	startNormalTextSprite->setPosition(ccp(startSpriteSize.width/2,startSpriteSize.height/2+20));
+
+	CCSprite *startSelectedBackgroundSprite = CCSprite::createWithSpriteFrameName("ui_button_box02_01.png");
+	CCSprite *startSelectedTextSprite = CCSprite::createWithSpriteFrameName("ui_2p_010.png");
+	startSelectedBackgroundSprite->addChild(startSelectedTextSprite);
+
+	startNormalTextSprite->setPosition(ccp(startSpriteSize.width / 2, startSpriteSize.height / 2 + 20));
+
+	CCMenuItemSprite *startMenuItem = CCMenuItemSprite::create(startNormalBackgroundSprite, startSelectedBackgroundSprite
+		, this,menu_selector(GameMenuLayer::onStertGame));
+	CCMenu *menu = CCMenu::create(startMenuItem,NULL);
+	this->addChild(menu);
+	menu->setPosition(ccp(1024, 800));
+
+}
+CCScene *GameMenuLayer::scene()
+{
+	CCScene *scene = CCScene::create();
+	GameMenuLayer *layer = GameMenuLayer::create();
+	scene->addChild(layer);
+	return scene;
+
+}
+void GameMenuLayer::onStertGame(CCObject *sender)
 {
 
-}
-
-void GameMenuLayer::menuCallbackStartGame(CCObject* sender)
-{
-
-}
-
-GameMenuLayer::~GameMenuLayer()
-{
 }
