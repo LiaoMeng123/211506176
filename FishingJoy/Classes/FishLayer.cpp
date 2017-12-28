@@ -28,11 +28,11 @@ bool FishLayer::init()
 	CC_SAFE_RETAIN(_fishes);//数组创建完成后，需要通过CC_SAFE_RETAIN(_fishes)将其保存下来，不然会被回收池给回收掉
 	for (int i=0; i < FISH_MAX_COUNT; i++)
 	{
-		int type = CCRANDOM_0_1() *k_Fish_Type_Count -1;//得到某种鱼的某种类别
+		int type = CCRANDOM_0_1() *k_Fish_Type_Count -1;
 		CCLOG("FishLayer type=%d", type);
 		//type = (FishType)100;
 		/*type只能1鱼只加载进一种？？在Fish的init有问题*/
-		Fish *fish = Fish::create((FishType)type);//生成对应种类的鱼
+		Fish *fish = Fish::create((FishType)type);
 		_fishes->addObject(fish);
 	}
 	this->schedule(schedule_selector(FishLayer::addFish), 3.0);//每隔3秒就会调用一次addFish函数

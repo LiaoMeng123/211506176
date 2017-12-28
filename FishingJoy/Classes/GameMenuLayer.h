@@ -1,7 +1,7 @@
 #pragma once
 #include"cocos2d.h"
 using namespace cocos2d;
-/*”Œœ∑≤Àµ•≤„*/
+
 class GameMenuLayer :public CCLayer
 {
 public:

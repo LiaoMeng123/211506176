@@ -36,7 +36,6 @@ bool Fish::init(FishType type)
 		return false;
 	}
 
-	/*运行就出错？？*/
 	if (type <=k_Fish_Type_SmallFish || type >= k_Fish_Type_Count)
 	{
 		type = (FishType)1;
